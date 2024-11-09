@@ -1,4 +1,4 @@
-﻿#cloud-config
+﻿# cloud-init configuration
 package_upgrade: true
 packages:
   - nginx
@@ -28,12 +28,12 @@ write_files:
       <html lang="en">
       <head>
         <meta charset="UTF-8">
-        <title>Mon Site Web Personnalisé</title>
+        <title>My Custom Website</title>  # Title in English to avoid special characters
         <link rel="stylesheet" href="/home/myapp/style.css">
       </head>
       <body>
-        <h1>Bienvenue sur le site web déployé !!</h1>
-        <p id="message">Ce contenu est personnalisé avec cloud-init.</p>
+        <h1>Welcome to the deployed website!!</h1>  # Text in English
+        <p id="message">This content is customized with cloud-init.</p>  # Text in English
         <script src="/home/myapp/script.js"></script>
       </body>
       </html>
@@ -53,7 +53,7 @@ write_files:
     path: /home/myapp/script.js
     defer: true
     content: |
-      document.getElementById('message').textContent = 'Ce texte est modifié par JavaScript!';
+      document.getElementById('message').textContent = 'This text is modified by JavaScript!';  # Text in English
   - owner: www-data:www-data
     path: /home/myapp/index.js
     defer: true
