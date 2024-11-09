@@ -11,6 +11,8 @@ pool: "default"
 variables:
 - name: CloudInitContent
 
+# Step to read the content of 'Cloud-init.txt' and convert it to base64
+
 steps:
 - task: PowerShell@2
   inputs:
@@ -22,9 +24,11 @@ steps:
       Write-Host $encodedContent
       Write-Host "##vso[task.setvariable variable=CloudInitContent;]$encodedContent"
 
+# Display the 'CloudInitContent' variable in the logs for verification
 - script: |
     echo $(CloudInitContent)
 
+# get the secret value from a KeyVault from a different ressource group
 - task: AzureKeyVault@2
   inputs:
     azureSubscription: 'Abonnement Azure 1(702026df-fd40-4116-8038-0a5ed7f00723)'
@@ -32,6 +36,8 @@ steps:
     SecretsFilter: 'adminPasswordForPipeline'
     RunAsPreJob: false
 
+
+# Step to deploy resources using an ARM (Azure Resource Manager) template
 - task: AzureResourceManagerTemplateDeployment@3
   inputs:
     deploymentScope: 'Resource Group'
