@@ -21,21 +21,56 @@ write_files:
         }
       }
   - owner: www-data:www-data
+    path: /home/myapp/index.html
+    defer: true
+    content: |
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <title>Mon Site Web Personnalisé</title>
+        <link rel="stylesheet" href="/home/myapp/style.css">
+      </head>
+      <body>
+        <h1>Bienvenue sur le site web déployé !!</h1>
+        <p id="message">Ce contenu est personnalisé avec cloud-init.</p>
+        <script src="/home/myapp/script.js"></script>
+      </body>
+      </html>
+  - owner: www-data:www-data
+    path: /home/myapp/style.css
+    defer: true
+    content: |
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        color: #333;
+      }
+      h1 {
+        color: #4CAF50;
+      }
+  - owner: www-data:www-data
+    path: /home/myapp/script.js
+    defer: true
+    content: |
+      document.getElementById('message').textContent = 'Ce texte est modifié par JavaScript!';
+  - owner: www-data:www-data
     path: /home/myapp/index.js
     defer: true
     content: |
       var express = require('express')
       var app = express()
-      var os = require('os');
+      var path = require('path');
+      app.use(express.static('/home/myapp'));
       app.get('/', function (req, res) {
-        res.send('Hello World from host ' + os.hostname() + '!')
-      })
+        res.sendFile(path.join('/home/myapp/index.html'));
+      });
       app.listen(3000, function () {
-        console.log('Hello world app listening on port 3000!')
+        console.log('App listening on port 3000!');
       })
 runcmd:
   - service nginx restart
   - cd "/home/myapp"
-  - npm init
-  - npm install express -y
+  - npm init -y
+  - npm install express
   - nodejs index.js
