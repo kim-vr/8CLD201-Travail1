@@ -28,7 +28,7 @@ steps:
 - task: AzureKeyVault@2
   inputs:
     azureSubscription: 'Abonnement Azure 1(702026df-fd40-4116-8038-0a5ed7f00723)'
-    KeyVaultName: 'VauItTP1'
+    KeyVaultName: 'VaultKeyTP1'
     SecretsFilter: 'adminPasswordForPipeline'
     RunAsPreJob: false
 
